@@ -17,7 +17,24 @@ if __name__ == '__main__':
         t = Talker()
         rate = rospy.Rate(1)# 1hz
         while not rospy.is_shutdown():
-        t.talk()
-        rate.sleep()
+            t.talk()
+            rate.sleep()
     except rospy.ROSInterruptException:
         pass
+        
+class Listener:
+    def __init__(self):
+        rospy.Subscriber("chatter", Float32, self.callback)
+        self.pub.raw = rospy.Publisher("output", Float32, queue_size = 10)
+        
+    def callback(self, msg):
+        self.response = ("chatter" + "published", msg.data)
+        rospy.loginfo(response)
+        self.pub.publish(response)
+        
+if __name__ == '__main__':
+    rospy.init_node('listener', anonymous=True)
+    Listener()
+    
+    # spin()
+    rospy.spin()
