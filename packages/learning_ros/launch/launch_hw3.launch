@@ -1,0 +1,12 @@
+<launch>
+
+<include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/mystery_package/launch/launch_mystery.launch"/>
+
+ <group ns="mystery">
+
+  <node pkg="learning_ros" name="hw3" type="hw3.py"/>
+  <node pkg="learning_ros" name="hw2" type="hw2.py"/>
+
+ </group>
+
+</launch>
