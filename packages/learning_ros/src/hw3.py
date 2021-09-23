@@ -12,7 +12,8 @@ class MysteryNode:
         self.pub_msg.units = "feet"
         
 
-    def callback(self, pub_msg):
+    def callback(self, msg):
+        self.pub_msg = msg
         self.pub_msg.value = self.pub_msg.value * 3.28
         self.pub_units.publish(self.pub_msg)
         
