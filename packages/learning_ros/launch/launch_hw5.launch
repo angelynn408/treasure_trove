@@ -1,0 +1,16 @@
+<launch>
+
+<include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/mystery_package/launch/launch_mystery.launch"/>
+
+ <group ns="mystery">
+  <param name="conversion" type="string" value="test"/>
+
+  <node pkg="learning_ros" name="hw5" type="hw5.py"/>
+  <node pkg="learning_ros" name="hw2_sub" type="hw2_sub.py"/>
+    
+  <remap from="/mystery/input" to="/mystery/conversion"/>
+  <node pkg="learning_ros" name="hw2" type="hw2.py"/>
+  
+ </group>
+
+</launch>
