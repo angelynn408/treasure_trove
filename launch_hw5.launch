@@ -1,9 +1,0 @@
-<launch>
-
- <group ns="mystery">
-
-  <node pkg="learning_ros" name="hw5" type="hw5.py"/>
-
- </group>
-
-</launch>
