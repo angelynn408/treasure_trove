@@ -11,7 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   duckietown_msgs
   roscpp
   rospy
-  std_msg
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -106,7 +106,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES lab_2
-#  CATKIN_DEPENDS duckietown_msgs roscpp rospy std_msg
+#  CATKIN_DEPENDS duckietown_msgs roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
