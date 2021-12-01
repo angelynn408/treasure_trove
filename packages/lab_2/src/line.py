@@ -5,8 +5,8 @@ from duckietown_msgs.msg import Twist2DStamped, FSMState
 
 class ShapeNode:
     def __init__(self):
-          self.pub = rospy.Publisher("lane_controller", Twist2DStamped, queue_size=10)
-          self.sub = rospy.Subscriber("fsm_node", FSMState, queue_size=10)
+          self.pub = rospy.Publisher('lane_controller_node/car_cmd', Twist2DStamped, queue_size=10)
+          self.sub = rospy.Subscriber('fsm_node/mode', FSMState, queue_size=10)
           self.flag = False
                         
     def callback_function(self, msg):      
