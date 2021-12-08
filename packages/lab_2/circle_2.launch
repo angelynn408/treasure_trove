@@ -1,0 +1,20 @@
+<launch>
+
+        <include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/odometry_hw/launch/odom_hw.launch"/>
+
+ <group ns="odom">
+  <param name="output_to_file" type="string" value="true"/>
+
+  <node pkg="lab_2" name="part2" type="part2.0py"/>
+    
+
+	<group ns="$(env VEHICLE_NAME)">
+		<node pkg="lab_2" name="circle" type="circle.py"/>
+	</group>
+
+	<include file="$(find fsm)/launch/fsm_node.launch">
+		<arg name="veh" value="$(env VEHICLE_NAME)"/>
+		<arg name="param_file_name" value="lane_following"/>
+	</include>
+	
+</launch>

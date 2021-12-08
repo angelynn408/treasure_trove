@@ -3,36 +3,52 @@
 from math import radians, sin, cos, sqrt
 import numpy
 import rospy
-from duckietown_msgs.msg import Vector2D
+from duckietown_msgs.msg import WheelEncoderStamped, Pose2DStamped
 
-class TransformNode:
+class OdomNode:
     def __init__(self):
-          self.R = rospy.Publisher("robot", Vector2D, queue_size=10)
-          self.W = rospy.Publisher("world", Vector2D, queue_size=10)
-          R_Px = 2            #X-position of Robot
-          R_Py = 7            #Y-position of Robot
-          R_O = radians(135)  #Orientation
-          R_Px_s = -2
-          R_Py_s = 0
-          self.R_T_s = numpy.matrix([[-1,0,-2],
-                                [0,-1,0],
-                                [0,0,1]])
-          self.W_T_R = numpy.matrix([[-1/sqrt(2),-1/sqrt(2),2],
-                                [1/sqrt(2),-1/sqrt(2),7],
-                                [0,0,1]])
-          self.W_T_S = self.W_T_R*self.R_T_s
-          rospy.Subscriber("transform", Vector2D, self.callback_function)
+        self.pose = Pose2DStamped()
+        self.R = rospy.Publisher("pose", Pose2DStamped, queue_size=10)
+        self.x = 0
+        self.y = 0
+        self.theta = 0
+        self.s_l = 0
+        self.s_r = 0
+        self.delta_s_r = 0
+        self.delta_s_l = 0
+        self.delta_s = 0
+        self.delta_theta = 0
+        radius = .065/2
+        circumference = radius*2*np.pi
+        distance = .010
+        #calculate ticks per revolution
           
+        self.left_tick = rospy.Subscriber("left_wheel_encoder_node/tick", WheelEncoderStamped, self.Left_Wheel)
+        self.right_tick = rospy.Subscriber("right_wheel_encoder_node/tick", WheelEncoderStamped, self.Right_Wheel)
+          
+    def Left_Wheel(self, msg):
+        #number of revolutions
+        #calculation of distance based on above
+        #delta distance new - s
+        
+    
+    def Right_Wheel(self, msg):
+        
+    
     def callback_function(self, msg):
-          s_p = numpy.matrix([[msg.x],[msg.y],[1]])
-          robot_p = self.R_T_s*s_p
-          world_p = self.W_T_R*robot_p
+        delta_s_r = self.dist_wheel_right
+        delta_s_l = self.dist_wheel_left
+        delta_s = (delta_s_r+delta_s_l)/2
+        delta_theta = (delta_s_r-delta_s_l)/(2*L)
+        delta_x = delta_s*cos(self.theta+delta_theta/2)
+        delta_y = delta_s*sin(self.theta+delta_theta/2)
+        self.x = self.x+delta_x
+        self.y = self.y+delta_y
+        self.theta = self.theta+delta_theta                       
+        self.R.publish(self.x,self.y,self.theta) 
                            
-          self.R.publish(robot_p[0,0],robot_p[1,0]) 
-          self.W.publish(world_p[0,0],world_p[1,0])
-                 
 if __name__=='__main__':
-    rospy.init_node ('transform_node')
-    TransformNode()
+    rospy.init_node ('odom_node')
+    OdomNode()
     
     rospy.spin()
