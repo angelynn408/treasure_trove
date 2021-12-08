@@ -14,9 +14,9 @@ class ShapeNode:
         if msg.state == "LANE_FOLLOWING" and self.flag == False:
             self.flag = True
             time = rospy.get_time()
-            while rospy.get_time() < time + 2.3:
-                fwd.v = 0.8
-                fwd.omega = -0.8
+            while rospy.get_time() < time + 2.7:
+                fwd.v = 0.6
+                fwd.omega = -0.4             #7-Dec -0.8
                 self.pub.publish(fwd)
                 rospy.sleep(0.1)
             fwd.v = 0

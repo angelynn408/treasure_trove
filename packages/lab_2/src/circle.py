@@ -1,38 +1,36 @@
 #!/usr/bin/env python3
 
-from math import radians, sin, cos, sqrt
-import numpy
 import rospy
-from duckietown_msgs.msg import Vector2D
+from duckietown_msgs.msg import Twist2DStamped, FSMState
 
-class TransformNode:
+class ShapeNode:
     def __init__(self):
-          self.R = rospy.Publisher("robot", Vector2D, queue_size=10)
-          self.W = rospy.Publisher("world", Vector2D, queue_size=10)
-          R_Px = 2            #X-position of Robot
-          R_Py = 7            #Y-position of Robot
-          R_O = radians(135)  #Orientation
-          R_Px_s = -2
-          R_Py_s = 0
-          self.R_T_s = numpy.matrix([[-1,0,-2],
-                                [0,-1,0],
-                                [0,0,1]])
-          self.W_T_R = numpy.matrix([[-1/sqrt(2),-1/sqrt(2),2],
-                                [1/sqrt(2),-1/sqrt(2),7],
-                                [0,0,1]])
-          self.W_T_S = self.W_T_R*self.R_T_s
-          rospy.Subscriber("transform", Vector2D, self.callback_function)
-          
-    def callback_function(self, msg):
-          s_p = numpy.matrix([[msg.x],[msg.y],[1]])
-          robot_p = self.R_T_s*s_p
-          world_p = self.W_T_R*robot_p
-                           
-          self.R.publish(robot_p[0,0],robot_p[1,0]) 
-          self.W.publish(world_p[0,0],world_p[1,0])
+        self.pub = rospy.Publisher('lane_controller_node/car_cmd', Twist2DStamped, queue_size=10)
+        self.sub = rospy.Subscriber('fsm_node/mode', FSMState, self.callback_function)
+        self.flag = False
+                        
+    def callback_function(self, msg):      
+        fwd = Twist2DStamped()
+        if msg.state == "LANE_FOLLOWING" and self.flag == False:
+            self.flag = True
+            time = rospy.get_time()
+            while rospy.get_time() < time + 10:
+                fwd.v = 0.6
+                fwd.omega = 1.0         #7-Dec -0.8
+                self.pub.publish(fwd)
+                rospy.sleep(0.1)
+            fwd.v = 0
+            fwd.omega = 0
+            self.pub.publish(fwd)             	
+        elif msg.state == "NORMAL_JOYSTICK_CONTROL":
+            fwd.v = 0
+            fwd.omega = 0
+            self.flag = False
+         
+        self.pub.publish(fwd)
+         
                  
 if __name__=='__main__':
-    rospy.init_node ('transform_node')
-    TransformNode()
-    
+    rospy.init_node('line', anonymous=True)
+    ShapeNode()
     rospy.spin()

@@ -46,6 +46,7 @@ class ImageProcess:
         mask_yellow = self.bridge.cv2_to_imgmsg(bottom_half, "bgr8")
         self.white.publish(mask_white)
         self.yellow.publish(mask_yellow)
+        
 if __name__=='__main__':
 rospy.init_node ('image_process', anonymous=True)
 ImageProcess()
