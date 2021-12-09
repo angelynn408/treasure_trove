@@ -2,10 +2,10 @@
 
 <include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/image_processing/launch/image_pub.launch"/>
 
- <group ns="image_flipper">
+ <group ns="hough_transform">
   <param name="image" type="string" value="true"/>
 
-  <node pkg="lab_3" name="hw7" type="hw7.py"/>
+  <node pkg="lab_3" name="hw8" type="hw8.py"/>
     
  </group>
 

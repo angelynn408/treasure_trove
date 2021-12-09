@@ -2,20 +2,12 @@
 
 import rospy
 import cv2
-from cv_bridge import CVBridge
+from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
-#convert to HSV
-#image_white 
-#IMAGE_yellow
-#eroded vs dilated
-#publish white and yellow
-#imgmsg_to_cv
-#cv_to_imgmsg
-
-class ImageProcess:
+class ImageFlipper:
     def __init__(self):
-        self.bridge = CVBridge()
+        self.bridge = CvBridge()
         self.crop = rospy.Publisher("/image_cropped", Image, queue_size=10)        
         self.yellow = rospy.Publisher("/image_yellow", Image, queue_size = 10) 
         self.white = rospy.Publisher("/image_white", Image, queue_size = 10)
@@ -25,7 +17,7 @@ class ImageProcess:
         self.dilate = cv2.dilate(image, kernel)
         
         
-    def callback_function(self, msg):
+    def crop(self, msg):
         ros_cv = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         
         y_len = len(cv_img)
@@ -47,11 +39,7 @@ class ImageProcess:
         self.white.publish(mask_white)
         self.yellow.publish(mask_yellow)
         
-if __name__=='__main__':
-rospy.init_node ('image_process', anonymous=True)
-ImageProcess()
-rospy.spin()
-
-
-
-
+if __name__=="__main__":
+    rospy.init_node("image_flipper", anonymous=True)
+    ImageFlipper()
+    rospy.spin()
