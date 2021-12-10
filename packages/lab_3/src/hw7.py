@@ -9,15 +9,16 @@ class ImageFlipper:
     def __init__(self):
         self.bridge = CvBridge()
         self.crop = rospy.Publisher("/image_cropped", Image, queue_size=10)        
-        self.yellow = rospy.Publisher("/image_yellow", Image, queue_size = 10) 
-        self.white = rospy.Publisher("/image_white", Image, queue_size = 10)
-        self.sub = rospy.Subscriber("/image", Image, self.crop)
+        self.yellow = rospy.Publisher("/image_yellow", Image, queue_size=10) 
+        self.white = rospy.Publisher("/image_white", Image, queue_size=10)
+        
         self.erode = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
         self.dilate = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
+        self.sub = rospy.Subscriber("/image", Image, self.crop)
         
     def crop(self, msg):
         ros_cv = self.bridge.imgmsg_to_cv2(msg, "bgr8")
-        ros
+        
         y_len = len(cv_img)
         x_len = len(cv_img[0])
         
