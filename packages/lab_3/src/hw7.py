@@ -14,15 +14,15 @@ class ImageFlipper:
         
         self.erode = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
         self.dilate = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
-        self.sub = rospy.Subscriber("/image", Image, self.crop)
+        self.sub = rospy.Subscriber("/image", Image, self.ImgProcess)
         
-    def crop(self, msg):
-        ros_cv = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+    def ImgProcess(self, msg):
+        cv_img = self.bridge.imgmsg_to_cv2(msg, "bgr8")
         
         y_len = len(cv_img)
         x_len = len(cv_img[0])
         
-        bottom_half = cvg_img[y_len/2:y_len, 0:x_len]
+        bottom_half = cv_img[int(y_len/2):y_len, 0:x_len]
         cv_hsv = cv2.cvtColor(bottom_half, cv2.COLOR_BGR2HSV)
         white = cv2.inRange(cv_hsv, (0,0,0), (180,25,255))
         yellow = cv2.inRange(cv_hsv, (30,100,150),(40,255,255))
@@ -35,10 +35,9 @@ class ImageFlipper:
         white = cv2.bitwise_and(bottom_half, bottom_half, mask=white) #mask
         yellow = cv2.bitwise_and(bottom_half, bottom_half, mask=yellow) #mask
         cv_ros = self.bridge.cv2_to_imgmsg(bottom_half, "bgr8")
-        white = self.bridge.cv2_to_imgmsg(white, "bgr8")
-        yellow = self.bridge.cv2_to_imgmsg(yellow, "bgr8")
+
         
-        self.bottom_half.publish(cv_ros)
+        self.crop.publish(cv_ros)
         mask_white = self.bridge.cv2_to_imgmsg(white, "bgr8")
         mask_yellow = self.bridge.cv2_to_imgmsg(yellow, "bgr8")
         self.white.publish(mask_white)
