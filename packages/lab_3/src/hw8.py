@@ -8,9 +8,9 @@ from sensor_msgs.msg import Image
 class HoughTransform:
     def __init__(self):
         self.bridge = CvBridge()
-        self.crop = rospy.Publisher("/image_cropped", Image, queue_size=10)        
-        self.yellow = rospy.Publisher("/image_yellow", Image, queue_size = 10) 
-        self.white = rospy.Publisher("/image_white", Image, queue_size = 10)
+        self.crop = rospy.Subscriber("/image_cropped", Image, queue_size=10)        
+        self.yellow = rospy.Subscriber("/image_yellow", Image, queue_size = 10) 
+        self.white = rospy.Subscriber("/image_white", Image, queue_size = 10)
         cv2.HoughLinesP(image, rho, theta, threshold[, lines[, minLineLength[, maxLineGap}}})
         
         
