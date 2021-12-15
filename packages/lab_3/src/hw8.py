@@ -5,15 +5,25 @@ import cv2
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
+#subscribes to cropped image from hw7 /image_cropped
+#performs Canny and publishes to image_edges
+#subs to /image_white and /image_yellow
+#OpenCV bitwise_and on /image_white and /image_yellow
+#Hough on /image_white and /image_yellow
+#Hough on /image_cropped and publish as image_lines_white and image_lines_yellow
+#optional image_lines_all
 class HoughTransform:
     def __init__(self):
         self.bridge = CvBridge()
-        self.crop = rospy.Subscriber("/image_cropped", Image, queue_size=10)        
+        self.crop = rospy.Subscriber("/image_cropped", Image, self.Canny)        
         self.yellow = rospy.Subscriber("/image_yellow", Image, queue_size = 10) 
         self.white = rospy.Subscriber("/image_white", Image, queue_size = 10)
         cv2.HoughLinesP(image, rho, theta, threshold[, lines[, minLineLength[, maxLineGap}}})
         
         
+    def Canny(self)
+        
+    
     def output_lines(self, original_image, lines):
         output = np.copy(original_image)
         if lines is not None:
