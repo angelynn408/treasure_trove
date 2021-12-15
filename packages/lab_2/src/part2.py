@@ -8,7 +8,7 @@ from duckietown_msgs.msg import WheelEncoderStamped, Pose2DStamped
 class OdomNode:
     def __init__(self):
         self.pose = Pose2DStamped()
-        self.R = rospy.Publisher("velocity_to_pose_node/pose", Pose2DStamped, queue_size=10)
+        self.R = rospy.Publisher("/pose", Pose2DStamped, queue_size=10)
         self.x = 0
         self.y = 0
         self.theta = 0
@@ -20,8 +20,7 @@ class OdomNode:
         self.delta_theta = 0
         radius = .065/2
         self.circumference = radius*2*numpy.pi
-        distance = .010
-        self.rev_per_tick = 105
+        self.rev_per_tick = 150
           
         self.left_tick = rospy.Subscriber("left_wheel_encoder_node/tick", WheelEncoderStamped, self.Left_Wheel)
         self.right_tick = rospy.Subscriber("right_wheel_encoder_node/tick", WheelEncoderStamped, self.Right_Wheel)
@@ -43,6 +42,7 @@ class OdomNode:
         self.dist_wheel_right = dist_right-self.delta_s_l
     
     def callback_function(self, msg):
+        L = .05
         delta_s_r = self.dist_wheel_right
         delta_s_l = self.dist_wheel_left
         delta_s = (delta_s_r+delta_s_l)/2
@@ -53,11 +53,10 @@ class OdomNode:
         self.y = self.y+delta_y
         self.theta = self.theta+delta_theta                       
         self.R.publish(self.x,self.y,self.theta)
-        final_dist = "Duckie Distance %s"%self.R()
-        rospy.loginfo(final_dist)
+        
                            
 if __name__=='__main__':
-    rospy.init_node ('odom_node')
+    rospy.init_node ('odom_node', anonymous=True)
     OdomNode()
     
     rospy.spin()
