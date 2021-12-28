@@ -24,8 +24,8 @@ class OdomNode:
           
         self.left_tick = rospy.Subscriber("left_wheel_encoder_node/tick", WheelEncoderStamped, self.Left_Wheel)
         self.right_tick = rospy.Subscriber("right_wheel_encoder_node/tick", WheelEncoderStamped, self.Right_Wheel)
-        rospy.Subscriber("/dist_wheel", DistWheel, self.callback_function)
-                  
+        rospy.subscriber("/pose", 
+        
     def Left_Wheel(self, msg):
         #number of revolutions
         revs_left = msg.data/self.rev_per_tick
@@ -63,9 +63,5 @@ class OdomNode:
 if __name__=='__main__':
     rospy.init_node ('odom_node', anonymous=True)
     O = OdomNode()
-    wait = rospy.Rate(10)
-    while not rospy.is_shutdown():
-        O.callback_function()
-        wait.sleep()
     rospy.spin()
     
