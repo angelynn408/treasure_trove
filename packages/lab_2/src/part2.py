@@ -8,7 +8,7 @@ from duckietown_msgs.msg import WheelEncoderStamped, Pose2DStamped
 class OdomNode:
     def __init__(self):
         self.pose = Pose2DStamped()
-        self.R = rospy.Publisher("pose", Pose2DStamped, queue_size=10)
+        self.R = rospy.Publisher("/pose", Pose2DStamped, queue_size=10)
         self.x = 0
         self.y = 0
         self.theta = 0
@@ -24,6 +24,7 @@ class OdomNode:
           
         self.left_tick = rospy.Subscriber("left_wheel_encoder_node/tick", WheelEncoderStamped, self.Left_Wheel)
         self.right_tick = rospy.Subscriber("right_wheel_encoder_node/tick", WheelEncoderStamped, self.Right_Wheel)
+        rospy.Subscriber("/dist_wheel", DistWheel, self.callback_function)
                   
     def Left_Wheel(self, msg):
         #number of revolutions
@@ -63,7 +64,8 @@ if __name__=='__main__':
     rospy.init_node ('odom_node', anonymous=True)
     O = OdomNode()
     wait = rospy.Rate(10)
-    rospy.spin()
     while not rospy.is_shutdown():
         O.callback_function()
         wait.sleep()
+    rospy.spin()
+    
