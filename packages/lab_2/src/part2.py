@@ -40,11 +40,13 @@ class OdomNode:
         revs_right = msg.data/self.rev_per_tick
         #calculation of distance based on above
         dist_right = self.circumference*revs_right
-        self.dist_wheel_right = dist_right-self.delta_s_l
+        self.dist_wheel_right = dist_right-self.delta_s_r
         
     
     def callback_function(self):
         L = .05
+        self.Left_Wheel(self.pose)
+        self.Right_Wheel(self.pose)
         delta_s_r = self.dist_wheel_right
         delta_s_l = self.dist_wheel_left
         delta_s = (delta_s_r+delta_s_l)/2
