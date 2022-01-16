@@ -22,7 +22,8 @@ class OdomNode:
         radius = .065/2
         self.circumference = radius*2*numpy.pi
         self.rev_per_tick = 115
-          
+        self.dist_wheel_left = 0
+        self.dist_wheel_right = 0  
         self.left_tick = rospy.Subscriber("left_wheel_encoder_node/tick", WheelEncoderStamped, self.Left_Wheel)
         self.right_tick = rospy.Subscriber("right_wheel_encoder_node/tick", WheelEncoderStamped, self.Right_Wheel)
                 
@@ -45,8 +46,6 @@ class OdomNode:
     
     def callback_function(self):
         L = .05
-        self.Left_Wheel(self.pose)
-        self.Right_Wheel(self.pose)
         delta_s_r = self.dist_wheel_right
         delta_s_l = self.dist_wheel_left
         delta_s = (delta_s_r+delta_s_l)/2
