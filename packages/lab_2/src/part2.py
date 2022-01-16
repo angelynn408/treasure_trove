@@ -24,7 +24,7 @@ class OdomNode:
           
         self.left_tick = rospy.Subscriber("left_wheel_encoder_node/tick", WheelEncoderStamped, self.Left_Wheel)
         self.right_tick = rospy.Subscriber("right_wheel_encoder_node/tick", WheelEncoderStamped, self.Right_Wheel)
-        rospy.Subscriber("/pose", Pose2DStamped, self.callback_function)
+        rospy.Subscriber("/dist_wheel", WheelEncoderStamped, self.callback_function)
         
     def Left_Wheel(self, msg):
         #number of revolutions
