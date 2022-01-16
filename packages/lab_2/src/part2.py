@@ -46,15 +46,15 @@ class OdomNode:
     
     def callback_function(self):
         L = .05
-        delta_s_r = self.dist_wheel_right
-        delta_s_l = self.dist_wheel_left
-        delta_s = (delta_s_r+delta_s_l)/2
-        delta_theta = (delta_s_r-delta_s_l)/(2*L)
-        delta_x = delta_s*cos(self.theta+delta_theta/2)
-        delta_y = delta_s*sin(self.theta+delta_theta/2)
+        self.delta_s_r = self.dist_wheel_right
+        self.delta_s_l = self.dist_wheel_left
+        self.delta_s = (self.delta_s_r+self.delta_s_l)/2
+        self.delta_theta = (self.delta_s_r-self.delta_s_l)/(2*L)
+        delta_x = self.delta_s*cos(self.theta+self.delta_theta/2)
+        delta_y = self.delta_s*sin(self.theta+self.delta_theta/2)
         self.x = self.x+delta_x
         self.y = self.y+delta_y
-        self.theta = self.theta+delta_theta 
+        self.theta = self.theta+self.delta_theta 
         self.pose.x = self.x
         self.pose.y = self.y
         self.pose.theta = self.theta                      
