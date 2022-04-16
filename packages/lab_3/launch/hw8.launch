@@ -1,6 +1,6 @@
 <launch>
 
- <group ns="hough_transform">
+ <group ns="line_filter">
   <param name="image" type="string" value="true"/>
 
   <node pkg="lab_3" name="hw7" type="hw7.py"/>
