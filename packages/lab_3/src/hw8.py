@@ -5,13 +5,6 @@ import cv2
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
-
-#performs Canny and publishes to image_edges
-
-
-
-#Hough on /image_cropped and publish as image_lines_white and image_lines_yellow
-#optional image_lines_all
 class LineFilter:
     def __init__(self):
         self.bridge = CvBridge()
@@ -40,8 +33,8 @@ class LineFilter:
     
     def AllEdges(self):
         #OpenCV bitwise_and on /image_white and /image_yellow
-        yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask
-        white_edges = cv2.bitwise_and(self.white_edges, self.
+        yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask      
+        white_edges = cv2.bitwise_and(self.white_edges, self.white_edges, mask
         all_edges = cv2.bitwise_or(yellow_edges, white_edges)
         
         #hsv to rgb
