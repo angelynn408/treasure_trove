@@ -43,9 +43,9 @@ class LineFilter:
         all_rgb = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
         
         #rgb to gray
-        yellow_gray = cv2.cvtColor(yellow_rgb, cv2.COLOR_HSV2RGB)
-        white_gray = cv2.cvtColor(white_rgb, cv2.COLOR_HSV2RGB)
-        all_gray = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
+        yellow_gray = cv2.cvtColor(yellow_rgb, cv2.COLOR_RGB2GRAY)
+        white_gray = cv2.cvtColor(white_rgb, cv2.COLOR_RGB2GRAY)
+        all_gray = cv2.cvtColor(all_edges, cv2.COLOR_RGB2GRAY)
         
         #Hough transform
         yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=np.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
