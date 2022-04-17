@@ -2,6 +2,7 @@
 
 import rospy
 import cv2
+import numpy
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 
@@ -49,9 +50,9 @@ class LineFilter:
         all_gray = cv2.cvtColor(all_edges, cv2.COLOR_RGB2GRAY)
         
         #Hough transform
-        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=np.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
-        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=np.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
-        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=np.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
+        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
+        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
+        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
         
         #line draw
         yellow_line = self.output_lines(self.cv2_cropped, yellow_hough)
