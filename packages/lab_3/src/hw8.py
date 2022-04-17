@@ -12,9 +12,9 @@ class LineFilter:
         self.yellow = rospy.Subscriber("/image_yellow", Image, self.Yellow) 
         self.white = rospy.Subscriber("/image_white", Image, self.White)          #subs to /image_white and /image_yellow
         self.edges = rospy.Publisher("/image_edges", Image, queue_size=10)
-        self.yellow_lines = rospy.Publisher("/image_lines_yellow", Image, queue_size=10)
-        self.white_lines = rospy.Publisher("/image_lines_white", Image, queue_size=10)
-        self.all_lines = rospy.Publisher("/image_lines_all", Image, queue_size=10)
+        self.yellow_lines = rospy.Publisher("/image_yellow_lines", Image, queue_size=10)
+        self.white_lines = rospy.Publisher("/image_white_lines", Image, queue_size=10)
+        self.all_lines = rospy.Publisher("/image_all_lines", Image, queue_size=10)
        
     def Cropped(self, msg):
         self.cv2_cropped = self.bridge.imgmsg_to_cv2(msg,"bgr8")
@@ -48,10 +48,9 @@ class LineFilter:
         all_gray = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
         
         #Hough transform
-        #cv2.HoughLinesP(image, rho, theta, threshold[, lines[, minLineLength[, maxLineGap}}})
-        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=mp.pi/180, threshold=[50, 0, 10])
-        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=mp.pi/180, threshold=[50, 0, 10])
-        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=mp.pi/180, threshold=[50, 0, 10])
+        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=mp.pi/180, threshold= 50, minLineLength=5, maxLineGap=10)
+        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=mp.pi/180, threshold= 50, minLineLength=5, maxLineGap=10)
+        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=mp.pi/180, threshold= 50, minLineLength=5, maxLineGap=10)
         
         #line draw
         yellow_line = self.output_lines(self.cv2_cropped, yellow_hough)
