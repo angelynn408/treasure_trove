@@ -33,8 +33,8 @@ class LineFilter:
     
     def AllEdges(self):
         #OpenCV bitwise_and on /image_white and /image_yellow
-        yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask      
-        white_edges = cv2.bitwise_and(self.white_edges, self.white_edges, mask
+        yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask=mask)      
+        white_edges = cv2.bitwise_and(self.white_edges, self.white_edges, mask=mask)
         all_edges = cv2.bitwise_or(yellow_edges, white_edges)
         
         #hsv to rgb
@@ -49,9 +49,9 @@ class LineFilter:
         
         #Hough transform
         #cv2.HoughLinesP(image, rho, theta, threshold[, lines[, minLineLength[, maxLineGap}}})
-        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=mp.pi/180, threshold= )
-        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=mp.pi/180, threshold= )
-        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=mp.pi/180, threshold= )
+        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=mp.pi/180, threshold[0,0])
+        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=mp.pi/180, threshold[0,0])
+        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=mp.pi/180, threshold[0,0])
         
         #line draw
         yellow_line = self.output_lines(self.cv2_cropped, yellow_hough)
