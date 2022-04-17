@@ -17,6 +17,7 @@ class LineFilter:
         self.all_lines = rospy.Publisher("/image_all_lines", Image, queue_size=10)
        
     def Cropped(self, msg):
+        self.crop_img = msg
         self.cv2_cropped = self.bridge.imgmsg_to_cv2(msg,"bgr8")
         self.cropped_edges = cv2.Canny(self.cv2_cropped, 10, 255)
         cropped_edges = self.bridge.cv2_to_imgmsg(self.cropped_edges,"mono8")
