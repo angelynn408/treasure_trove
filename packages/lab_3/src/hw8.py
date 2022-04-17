@@ -48,9 +48,9 @@ class LineFilter:
         all_gray = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
         
         #Hough transform
-        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=mp.pi/180, threshold= 50, minLineLength=5, maxLineGap=10)
-        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=mp.pi/180, threshold= 50, minLineLength=5, maxLineGap=10)
-        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=mp.pi/180, threshold= 50, minLineLength=5, maxLineGap=10)
+        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=mp.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
+        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=mp.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
+        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=mp.pi/180, threshold= 20, minLineLength=10, maxLineGap=5)
         
         #line draw
         yellow_line = self.output_lines(self.cv2_cropped, yellow_hough)
