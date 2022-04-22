@@ -38,7 +38,7 @@ class LineFilter:
         if lines is not None:
             for i in range (len(lines)):
                 l = lines[i][0]
-                cv2.line(output, (l[0],l[1]), (l[2],l[3]), (255,0,0), 2, cv2.Line_AA)
+                cv2.line(output, (l[0],l[1]), (l[2],l[3]), (255,0,0), 2, cv2.LINE_AA)
                 cv2.circle(output, (l[0],l[1]), 2, (0,255,0))
                 cv2.circle(output, (l[2],l[3]), 2, (0,0,255))
             return ouput
