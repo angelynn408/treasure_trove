@@ -40,8 +40,8 @@ class LineFilter:
         all_edges = cv2.bitwise_or(yellow_edges, white_edges)
         
         #hsv to rgb
-        yellow_rgb = cv2.cvtColor(yellow_edges, cv2.Color_HSV2RGB)
-        white_rgb = cv2.cvtColor(white_edges, cv2.Color_HSV2RGB)
+        yellow_rgb = cv2.cvtColor(yellow_edges, cv2.COLOR_HSV2RGB)
+        white_rgb = cv2.cvtColor(white_edges, cv2.COLOR_HSV2RGB)
         all_rgb = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
         
         #rgb to gray
