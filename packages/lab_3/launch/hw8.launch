@@ -4,7 +4,7 @@
   <param name="image" type="string" value="true"/>
 
   <node pkg="lab_3" name="hw7" type="hw7.py"/>
-  <node pkg="lab_3" name="hw8" type="hw8.py"/>
+  ##<node pkg="lab_3" name="hw8" type="hw8.py"/>
     
  </group>
 
