@@ -41,7 +41,7 @@ class LineFilter:
                 cv2.line(output, (l[0],l[1]), (l[2],l[3]), (255,0,0), 2, cv2.LINE_AA)
                 cv2.circle(output, (l[0],l[1]), 2, (0,255,0))
                 cv2.circle(output, (l[2],l[3]), 2, (0,0,255))
-            return ouput
+        return ouput
     
     def AllEdges(self):
         #OpenCV bitwise_and on /image_white and /image_yellow
