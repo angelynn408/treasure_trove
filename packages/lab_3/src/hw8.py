@@ -33,15 +33,15 @@ class LineFilter:
         self.white_edges = np.array(white)
         self.AllEdges()
     
-    def AllEdges(self):
+    def AllEdges(self,msg):
         #OpenCV bitwise_and on /image_white and /image_yellow
         yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask=self.cropped_edges)      
         white_edges = cv2.bitwise_and(self.white_edges, self.white_edges, mask=self.cropped_edges)
         all_edges = cv2.bitwise_or(yellow_edges, white_edges)
         
         #hsv to rgb
-        yellow_rgb = cv2.cvtColor(yellow_edge, cv2.Color_HSV2RGB)
-        white_rgb = cv2.cvtColor(white_edge, cv2.Color_HSV2RGB)
+        yellow_rgb = cv2.cvtColor(yellow_edges, cv2.Color_HSV2RGB)
+        white_rgb = cv2.cvtColor(white_edges, cv2.Color_HSV2RGB)
         all_rgb = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
         
         #rgb to gray
