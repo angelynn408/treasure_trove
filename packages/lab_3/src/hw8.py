@@ -9,7 +9,7 @@ from sensor_msgs.msg import Image
 class LineFilter:
     def __init__(self):
         self.bridge = CvBridge()
-        self.cropped = rospy.Subscriber("/image_cropped", Image, self.Cropped)        #subscribes to cropped image from hw7 /image_cropped
+        self.crop = rospy.Subscriber("/image_cropped", Image, self.Cropped)        #subscribes to cropped image from hw7 /image_cropped
         self.yellow = rospy.Subscriber("/image_yellow", Image, self.Yellow) 
         self.white = rospy.Subscriber("/image_white", Image, self.White)          #subs to /image_white and /image_yellow
         self.edges = rospy.Publisher("/image_edges", Image, queue_size=10)
