@@ -32,6 +32,16 @@ class LineFilter:
         white = self.bridge.imgmsg_to_cv2(msg,"bgr8")
         self.white_edges = np.array(white)
         self.AllEdges()
+        
+    def output_lines(self,original_image,lines):
+        output = np.copy(original_image)
+        if lines is not None:
+            for i in range (len(lines)):
+                l = lines[i][0]
+                cv2.line(output, (l[0],l[1]), (l[2],l[3]), (255,0,0), 2, cv2.Line_AA)
+                cv2.circle(output, (l[0],l[1]), 2, (0,255,0))
+                cv2.circle(output, (l[2],l[3]), 2, (0,0,255))
+            return ouput
     
     def AllEdges(self):
         #OpenCV bitwise_and on /image_white and /image_yellow
