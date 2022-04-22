@@ -65,9 +65,9 @@ class LineFilter:
         all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
         
         #line draw
-        yellow_line = self.bottom_half(self.cv2_cropped, yellow_hough)
-        white_line = self.bottom_half(self.cv2_cropped, white_hough)
-        all_line = self.bottom_half(self.cv2_cropped, all_hough)
+        yellow_line = self.output_lines(self.cv2_cropped, yellow_hough)
+        white_line = self.output_lines(self.cv2_cropped, white_hough)
+        all_line = self.output_lines(self.cv2_cropped, all_hough)
         
         #cv2 to imgmsg
         yellow_convert = self.bridge.cv2_to_imgmsg(yellow_line,"bgr8")
