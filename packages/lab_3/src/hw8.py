@@ -26,10 +26,12 @@ class LineFilter:
         
     def Yellow(self, msg):
         yellow = self.bridge.imgmsg_to_cv2(msg,"bgr8")
+        yellow = cv2.dilate(yellow,self.dil_k)
         self.yellow_edges = np.array(yellow)
         
     def White(self,msg):
         white = self.bridge.imgmsg_to_cv2(msg,"bgr8")
+        white = cv2.dilate(white,self.dil_k)
         self.white_edges = np.array(white)
         self.AllEdges()
     

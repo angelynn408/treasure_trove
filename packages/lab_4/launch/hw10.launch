@@ -1,0 +1,8 @@
+<launch>
+
+  <node pkg="lab_4" name="hw10" type="hw10.py"/>
+  
+  <include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/example_action_server/launch/fibonacci.launch"/>
+  <include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/example_service/launch/fibonacci.launch"/>
+  
+</launch>
