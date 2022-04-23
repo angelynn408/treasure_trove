@@ -12,7 +12,7 @@ def ServiceClient(n):
         fib = rospy.ServiceProxy('calc_fibonacci', Fibonacci)
         nth = fib(n)
         return nth.sequence
-    except rospy.Service Exception as e:
+    except rospy.ServiceException as e:
         print("Service call failure %s" %e)
     ServT2 = rospy.get_time()
     rospy.loginfo(" Service time is " +str(ServT2-ServT1))
