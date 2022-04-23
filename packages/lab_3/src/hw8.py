@@ -13,7 +13,7 @@ class LineFilter:
         self.yellow = rospy.Subscriber("/image_yellow", Image, self.Yellow) 
         self.white = rospy.Subscriber("/image_white", Image, self.White)          #subs to /image_white and /image_yellow
         self.edges = rospy.Publisher("/image_edges", Image, queue_size=10)
-        self.dilate = cv2.getStructuringElement(cv2.MORPH_ELIPSE, (3,3))
+        self.dilate = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
         self.yellow_lines = rospy.Publisher("/image_yellow_lines", Image, queue_size=10)
         self.white_lines = rospy.Publisher("/image_white_lines", Image, queue_size=10)
         self.all_lines = rospy.Publisher("/image_all_lines", Image, queue_size=10)
