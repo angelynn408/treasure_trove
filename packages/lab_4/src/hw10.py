@@ -2,7 +2,7 @@
 
 import rospy
 import actionlib
-from example_service.srv import *
+from example_service.srv import all
 import example_action_server.msg
 
 def ServiceClient(n):
@@ -15,9 +15,8 @@ def ServiceClient(n):
     except rospy.ServiceException as e:
         print("Service call failure %s" %e)
     ServT2 = rospy.get_time()
-    rospy.loginfo(" Service time is " +str(ServT2-ServT1))
-        
-        
+    rospy.loginfo("Service time is " +str(ServT2-ServT1))
+
 def ActionClient(n):
     client = actionlib.SimpleActionClient('fibonacci', example_action_server.msg.FibonacciAction)
     client.wait_for_server()
