@@ -2,7 +2,7 @@
 
 import rospy
 import actionlib
-from example_service.srv import all
+from example_service.srv import *
 import example_action_server.msg
 
 def ServiceClient(n):
