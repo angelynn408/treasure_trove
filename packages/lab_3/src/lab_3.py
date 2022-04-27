@@ -24,9 +24,7 @@ class LaneDetector:
         offset = 40
         new_image = cv2.resize(old_image, image_size, interpolation=cv2.INTER_NEAREST)
         cropped_image = new_image[offset:, :]
-        
-              
-        
+
         cv_hsv = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2HSV)
         white = cv2.inRange(cv_hsv, (0,0,0), (180,25,255))
         yellow = cv2.inRange(cv_hsv, (30,100,150),(40,255,255))
@@ -38,75 +36,84 @@ class LaneDetector:
         
         white = cv2.bitwise_and(cropped_image, cropped_image, mask=white) #mask
         yellow = cv2.bitwise_and(cropped_image, cropped_image, mask=yellow) #mask
-        cv_ros = self.bridge.cv2_to_imgmsg(cropped_image, "bgr8")
-
+           
+        self.cropped_edges = cv2.Canny(cropped_image, 10, 255)
         
-        self.crop.publish(cv_ros)
-        mask_white = self.bridge.cv2_to_imgmsg(white, "bgr8")
-        mask_yellow = self.bridge.cv2_to_imgmsg(yellow, "bgr8")
-        self.white.publish(mask_white)
-        self.yellow.publish(mask_yellow)
-       
-    def Cropped(self, msg):
-        self.crop_img = msg
-        self.cv2_cropped = self.bridge.imgmsg_to_cv2(msg,"bgr8")
-        self.cropped_edges = cv2.Canny(self.cv2_cropped, 10, 255)
-        cropped_edges = self.bridge.cv2_to_imgmsg(self.cropped_edges,"mono8")
-        self.edges.publish(cropped_edges)
-        
-    def Yellow(self, msg):
-        yellow = self.bridge.imgmsg_to_cv2(msg,"bgr8")
         yellow = cv2.dilate(yellow,self.dilate)
         self.yellow_edges = np.array(yellow)
         
-    def White(self,msg):
-        white = self.bridge.imgmsg_to_cv2(msg,"bgr8")
         white = cv2.dilate(white,self.dilate)
         self.white_edges = np.array(white)
-        self.AllEdges()
-    
-    def AllEdges(self):
-        #OpenCV bitwise_and on /image_white and /image_yellow
-        yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask=self.cropped_edges)      
-        white_edges = cv2.bitwise_and(self.white_edges, self.white_edges, mask=self.cropped_edges)
-        all_edges = cv2.bitwise_or(yellow_edges, white_edges)
-        
+
+        yellow_edges = cv2.bitwise_and(self.yellow_edges, self.yellow_edges, mask=self.cropped_image)      
+        white_edges = cv2.bitwise_and(self.white_edges, self.white_edges, mask=self.cropped_image)
+
         #hsv to rgb
         yellow_rgb = cv2.cvtColor(yellow_edges, cv2.COLOR_HSV2RGB)
         white_rgb = cv2.cvtColor(white_edges, cv2.COLOR_HSV2RGB)
-        all_rgb = cv2.cvtColor(all_edges, cv2.COLOR_HSV2RGB)
-        
+  
         #rgb to gray
         yellow_gray = cv2.cvtColor(yellow_rgb, cv2.COLOR_RGB2GRAY)
         white_gray = cv2.cvtColor(white_rgb, cv2.COLOR_RGB2GRAY)
-        all_gray = cv2.cvtColor(all_edges, cv2.COLOR_RGB2GRAY)
+        
+        arr_cutoff = np.array([0, offset, 0, offset])
+        arr_ratio = np.array([1. / img_size[0], 1. / img_size[1], 1. / img_size[0], 1. / img_size[1]])
         
         #Hough transform
-        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
-        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
-        all_hough = cv2.HoughLinesP(all_gray, rho=1, theta=np.pi/180, threshold=20, minLineLength=10, maxLineGap=5)
+        yellow_hough = cv2.HoughLinesP(yellow_gray, rho=1, theta=np.pi/180, threshold=10, minLineLength=10, maxLineGap=5)
+        white_hough = cv2.HoughLinesP(white_gray, rho=1, theta=np.pi/180, threshold=10, minLineLength=10, maxLineGap=5)
+        
+        if white_hough is not None:
+            line_normalized_white = (white_hough + arr_cutoff) * arr_ratio
+                for i in line_normalized_white:
+                    segment = Segment()
+                    segment.color = 0
+                    segment.pixels_normalized[0].x = i[0][0]
+                    segment.pixels_normalized[0].y = i[0][1]
+                    segment.pixels_normalized[1].x = i[0][2]
+                    segment.pixels_normalized[2].y = i[0][3]
+                    segmentlist.segments.appen(segment)
+
+                
+        if yellow_hough is not None:
+            line_normalized_yellow = (yellow_hough + arr_cutoff) * arr_ratio
+                for i in line_normalized_yellow:
+                    segment = Segment()
+                    segment.color = 1
+                    segment.pixels_normalized[0].x = i[0][0]
+                    segment.pixels_normalized[0].y = i[0][1]
+                    segment.pixels_normalized[1].x = i[0][2]
+                    segment.pixels_normalized[2].y = i[0][3]
+                    segmentlist.segments.appen(segment)
         
         #line draw
-        yellow_line = self.output_lines(self.cv2_cropped, yellow_hough)
-        white_line = self.output_lines(self.cv2_cropped, white_hough)
-        all_line = self.output_lines(self.cv2_cropped, all_hough)
+        yellow_line = self.output_lines_yellow(cropped_image, yellow_hough)
+        white_line = self.output_lines_white(yellow_line, white_hough)
+     
         
         #cv2 to imgmsg
-        yellow_convert = self.bridge.cv2_to_imgmsg(yellow_line,"bgr8")
         white_convert = self.bridge.cv2_to_imgmsg(white_line,"bgr8")
-        all_convert = self.bridge.cv2_to_imgmsg(all_line,"bgr8")
+        self.line_overlay.publish(white_convert)
+      
+        if len(segmentlist.segments) is not 0:
+            self.line_segments.publish(segmentlist)
         
-        #publish images
-        self.yellow_lines.publish(yellow_convert)
-        self.white_lines.publish(white_convert)
-        self.all_lines.publish(all_convert)
-        
-    def output_lines(self,original_image,lines):
+    def output_lines_white(self,original_image,lines):
         output = np.copy(original_image)
         if lines is not None:
             for i in range (len(lines)):
                 l = lines[i][0]
-                cv2.line(output, (l[0],l[1]), (l[2],l[3]), (255,0,0), 2, cv2.LINE_AA)
+                cv2.line(output, (l[0],l[1]), (l[2],l[3]), (255,255,255), 2, cv2.LINE_AA)
+                cv2.circle(output, (l[0],l[1]), 2, (0,255,0))
+                cv2.circle(output, (l[2],l[3]), 2, (0,0,255))
+        return output
+        
+        def output_lines_yellow(self,original_image,lines):
+        output = np.copy(original_image)
+        if lines is not None:
+            for i in range (len(lines)):
+                l = lines[i][0]
+                cv2.line(output, (l[0],l[1]), (l[2],l[3]), (0,255,255), 2, cv2.LINE_AA)
                 cv2.circle(output, (l[0],l[1]), 2, (0,255,0))
                 cv2.circle(output, (l[2],l[3]), 2, (0,0,255))
         return output
