@@ -18,7 +18,7 @@ def ServiceClient(n):
     rospy.loginfo(" Service time is " +str(ServT2-ServT1))
         
         
-def Action_client(n):
+def ActionClient(n):
     client = actionlib.SimpleActionClient('fibonacci', example_action_server.msg.FibonacciAction)
     client.wait_for_server()
     goal = example_action_server.msg.FibonacciGoal(order=n)
@@ -37,11 +37,11 @@ def Action_client(n):
     
 if __name__=="__main__":
     rospy.init_node('hw10')
-    Serv3 = Service_Client(3)
+    Serv3 = ServiceClient(3)
     rospy.loginfo("Service Order 3 is " +str(Serv3))
-    Serv15= Service_Client(15)
+    Serv15= ServiceClient(15)
     rospy.loginfo("Service Order 15 is " +str(Serv15))
-    Act3 = Action_client(3)
+    Act3 = ActionClient(3)
     rospy.loginfo("Action order 3 is" +str(Act3))
-    Act15 = Action_client(15)
+    Act15 = ActionClient(15)
     rospy.loginfo("Action order 15 is" +str(Act15))
