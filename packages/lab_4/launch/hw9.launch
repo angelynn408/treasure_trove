@@ -1,5 +1,6 @@
 <launch>
-
+	<param name="controller_ready" type="string" value="true"/>
+        
 	<group ns="hw_9">
 		<node pkg="lab_4" name="hw9" type="hw9.py"/>
 		<param name="controller_ready" type="string" value="true"/>
