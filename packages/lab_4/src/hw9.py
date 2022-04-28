@@ -19,7 +19,7 @@ class Establish:
         self.pub = rospy.Publisher("/control_input", Float32, queue_size = 10)
         
     def control(self, error):
-        rospy.login(error.data)
+        rospy.loginfo(error.data)
         sumPID = self.Distance_PID.run(error.data)
         self.pub.publish(sumPID)
         
