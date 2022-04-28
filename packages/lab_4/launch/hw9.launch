@@ -2,7 +2,7 @@
 
 	<group ns="$(env VEHICLE_NAME)">
 		<node pkg="lab_4" name="hw9" type="hw9.py"/>
-		<node pkg="lab_2" name="part2" type="part2.py"/>
+		<node pkg="lab_4" name="hw9_2" type="hw9_2.py"/>
 	</group>
 
 	<include file="$(find fsm)/launch/fsm_node.launch">
