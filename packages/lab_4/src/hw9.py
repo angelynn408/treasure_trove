@@ -8,9 +8,9 @@ class Establish:
     def __init__(self):
         rospy.set_param("controller_ready", "true")
         rospy.set_param("graph_ready", "true")
-        kp = .49
+        kp = .44
         ki = 0.00002
-        kd = 0.05
+        kd = 0.03
         self.K = [kp, ki, kd]
         self.dt = 0.01
         self.Distance_PID = PID.PID(self.K, self.dt)
