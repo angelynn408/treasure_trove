@@ -19,7 +19,7 @@ class OdomNode:
         self.delta_theta = 0
         radius = .065/2
         self.circumference = radius*2*numpy.pi
-        self.rev_per_tick = 120
+        self.rev_per_tick = 135
         self.dist_wheel_left = 0
         self.dist_wheel_right = 0  
         self.left_first = True
