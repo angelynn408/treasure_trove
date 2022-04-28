@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import rospy
+import numpy
 from std_msgs.msg import Float32
-import PIDControllerClass as PID
+
 
 class PID:
     def __init__(self, K, dt):
