@@ -8,8 +8,8 @@ class Establish:
     def __init__(self):
         rospy.set_param("controller_ready", "true")
         rospy.set_param("graph_ready", "true")
-        kp = 1
-        ki = 0
+        kp = .4
+        ki = 0.002
         kd = 0
         self.K = [kp, ki, kd]
         self.dt = 0.01
