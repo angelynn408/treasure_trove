@@ -2,7 +2,6 @@
 
 import rospy
 from std_msgs.msg import Float32
-import PIDControllerClass as PID
 
 class Establish:
     def __init__(self):
@@ -24,7 +23,7 @@ class Establish:
         self.pub.publish(sumPID)
         
 if __name__ == "__main__":
-    rospy.init_mode("hw9", anonymous=True)
+    rospy.init_mode("hw_9", anonymous=True)
     Establish()
     rospy.spin()
         
