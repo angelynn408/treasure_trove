@@ -23,7 +23,7 @@ class Establish:
         self.pub.publish(sumPID)
         
 if __name__ == "__main__":
-    rospy.init_mode("establish", anonymous=True)
+    rospy.init_node("hw9", anonymous=True)
     Establish()
     rospy.spin()
         
