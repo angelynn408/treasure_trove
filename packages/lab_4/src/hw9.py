@@ -10,7 +10,7 @@ class Establish:
         rospy.set_param("graph_ready", "true")
         kp = .4
         ki = 0.002
-        kd = 0
+        kd = 0.1
         self.K = [kp, ki, kd]
         self.dt = 0.01
         self.Distance_PID = PID.PID(self.K, self.dt)
