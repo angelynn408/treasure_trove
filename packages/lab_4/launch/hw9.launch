@@ -1,7 +1,7 @@
 <launch>
 
 	<group ns="hw_9">
-		<node pkg="lab_4" name="PIDnode" type="hw9.py"/>
+		<node pkg="lab_4" name="hw9" type="hw9.py"/>
 		<param name="controller_ready" type="string" value="true"/>
 	</group>
 
