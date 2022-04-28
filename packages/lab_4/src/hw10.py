@@ -15,7 +15,7 @@ def ServiceClient(n):
         rospy.logwarn("Service time for " +str(n) +" request is " +str(ServT2-ServT1))
         return nth.sequence
     except rospy.ServiceException as e:
-        print("Service call failure %s" %e)
+        print("Service call failure %s " %e)
     
 
 def ActionClient(n):
@@ -42,6 +42,6 @@ if __name__=="__main__":
     Serv15= ServiceClient(15)
     rospy.logwarn("Service Order 15 is " +str(Serv15))
     Act3 = ActionClient(3)
-    rospy.logwarn("Action order 3 is" +str(Act3))
+    rospy.logwarn("Action order 3 is " +str(Act3))
     Act15 = ActionClient(15)
-    rospy.logwarn("Action order 15 is" +str(Act15))
+    rospy.logwarn("Action order 15 is " +str(Act15))
