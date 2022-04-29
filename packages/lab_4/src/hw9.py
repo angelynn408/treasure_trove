@@ -17,7 +17,7 @@ class Establish:
         
         self.err = rospy.Subscriber("/error", Float32, self.control)
         self.pub = rospy.Publisher("/control_input", Float32, queue_size = 10)
-        self.name = Float32()
+        
     def control(self, error):
         rospy.logwarn(error.data)
         sumPID = self.Distance_PID.run(error.data)
