@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   duckietown_msgs
   roscpp
-  mystery_package
   rospy
   sensor_msgs
   std_msgs
