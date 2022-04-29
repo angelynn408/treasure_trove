@@ -24,11 +24,10 @@ class PID:
         else:
             e_dot = (e - self.e_prev) / self.dt
         P = self.kp * e
-        I = self.ki = self.e_integrate
-        D = self.kd = e_dot
+        I = self.ki * self.e_integrate
+        D = self.kd * e_dot
         self.e_prev = e
         sumPID = P + I + D
-        rospy.logwarn("sum'd PID")
         return(sumPID)
         
 if __name__ == "__main__":
