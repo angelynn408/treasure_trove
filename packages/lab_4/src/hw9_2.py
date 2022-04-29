@@ -14,6 +14,7 @@ class PID:
         self.e_integrate = 0
         self.e_prev = None
         self.out = 0
+        rospy.logwarn("Initialized PID")
         
     def run(self,error):
         e = error
@@ -27,6 +28,7 @@ class PID:
         D = self.kd = e_dot
         self.e_prev = e
         sumPID = P + I + D
+        rospy.logwarn("sum'd PID")
         return(sumPID)
         
 if __name__ == "__main__":

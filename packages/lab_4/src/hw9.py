@@ -8,7 +8,7 @@ class Establish:
     def __init__(self):
         rospy.set_param("controller_ready", "true")
         rospy.set_param("graph_ready", "true")
-        kp = 0.475
+        kp = 10000.475
         ki = 0.00005
         kd = 0.085
         self.K = [kp, ki, kd]
@@ -16,7 +16,7 @@ class Establish:
         self.Distance_PID = PID.PID(self.K, self.dt)
         
         self.err = rospy.Subscriber("/error", Float32, self.control)
-        self.pub = rospy.Publisher("/control_input", Float32, queue_size = 10)
+        self.pub = rospy.Publisher("/control_input", Float32, queue_size=10)
         
     def control(self, error):
         rospy.logwarn(error.data)
