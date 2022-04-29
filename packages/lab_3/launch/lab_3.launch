@@ -1,4 +1,4 @@
-<launch>
+﻿<launch>
 
     <arg name="veh" default="$(env VEHICLE_NAME)"/>
     <arg name="ai_trafo_mode" default="cb" doc="'cb' for colo balance only; 'both' for color balance and linear trafo"/>
@@ -35,7 +35,7 @@
 
     </include>
 
-    <group ns="lane_detector">
+    <group ns="$(env VEHICLE_NAME)">
         <node pkg="lab_3" name="lab_3" type="lab_3.py"/>
     </group>
 
