@@ -1,14 +1,9 @@
 <launch>
-	<param name="controller_ready" type="string" value="true"/>
-        
-	<group ns="hw_9">
-		<node pkg="lab_4" name="hw9" type="hw9.py"/>
-		<param name="controller_ready" type="string" value="true"/>
-	</group>
-
-	<group ns="controls_hw">
-		<node pkg="controls_hw" name="vehicle_dynamics" type="vehicle_dynamics.py"/>
-		<param name="controller_ready" type="string" value="true"/>
-	</group>
+	
+	<node pkg="lab_4" name="hw9" type="hw9.py"/>
+	<node pkg="lab_4" name="hw9_2" type="hw9_2.py"/>
+	
+	<include file="/code/catkin_ws/src/treasure_trove/eece5560/packages/controls_hw/launch/start_dynamics.launch"/>
+	
 	
 </launch>
