@@ -10,7 +10,8 @@ project(lab_4)
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   duckietown_msgs
-  roscppmysetry_package
+  roscpp
+  mystery_package
   rospy
   sensor_msgs
   std_msgs
