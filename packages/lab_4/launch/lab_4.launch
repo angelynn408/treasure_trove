@@ -1,1 +1,23 @@
+<launch>
+
+  <group ns="$(env VEHICLE_NAME)">
+  
+    <node pkg="lab_4" name="lab_4" type="lab_4.py"/>
+    <node pkg="lab_4" name="hw9_2" type="hw9_2.py"/>
+    
+  </group>
+  
+  <include file="$(find fsm)/launch/fsm_node.launch">
+  
+    <arg name="veh" value="$(env VEHICLE_NAME)"/>
+    <arg name="param_file_name" value="lane_following"/>
+    
+  </include>
+  
+  <include file="$(find duckietown_demos)/launch/apriltag_detector.launch">
+  
+    <arg name="veh" value="$(env VEHICLE_NAME)"/>
+    
+  </include>
+  
 </launch>
