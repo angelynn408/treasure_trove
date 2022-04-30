@@ -56,8 +56,8 @@ class Follow:
 
         
         
-    def mode(self, mode):
-        self.state = mode.state
+    def mode(self, msg):
+        self.state = msg.state
         
 if __name__ == "__main__":
     rospy.init_node("lab_4", anonymous=True)

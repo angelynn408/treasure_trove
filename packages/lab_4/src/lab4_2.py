@@ -8,9 +8,9 @@ import hw9_2 as PID
 
 class Follow:
     def __init__(self):
-        kp = .45
+        kp = .6
         ki = 0.0001
-        kd = 0.0001
+        kd = 0.0005
         self.K = [kp, ki, kd]
         self.dt = 0.01
         self.tagPID = PID.PID(self.K, self.dt)
@@ -34,7 +34,7 @@ class Follow:
             
             trim = 0
             Vel.omega = trim - Err
-            max_speed = 0.5
+            max_speed = 0.3
             Vel.v = max_speed - Err
             
             if Vel.v < 0:
@@ -51,8 +51,8 @@ class Follow:
 
         
         
-    def mode(self, mode):
-        self.state = mode.state
+    def mode(self, msg):
+        self.state = msg.state
         #rospy.logwarn("test mode msg")
         
 if __name__ == "__main__":
