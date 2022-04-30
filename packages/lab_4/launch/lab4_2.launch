@@ -31,11 +31,12 @@
         <arg name="line_detector_param_file_name" value="default" />
         <arg name="/lane_following/ground_projection" value="true"/>
         <arg name="/lane_following/lane_filter" value="true"/>
-        <arg name="/lane_following/lane_controller" value="true"/>
+        <arg name="/lane_following/lane_controller" value="false"/>
 
     </include>
 
     <group ns="$(env VEHICLE_NAME)">
+        <node pkg="lab_3" name="lab_3" type="lab_3.py"/>
         <node pkg="lab_4" name="lab4_2" type="lab4_2.py"/>
         <node pkg="lab_4" name="hw9_2" type="hw9_2.py"/>
     </group>

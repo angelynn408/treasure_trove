@@ -16,14 +16,14 @@ class Follow:
         self.tagPID = PID.PID(self.K, self.dt)
         
         
-        self.mode = rospy.Subscriber("fsm_node/mode", FSMState, self.mode)
-        self.tag = rospy.Subscriber("lane_filter_node/lane_pose", LanePose, self.control)
+        rospy.Subscriber("fsm_node/mode", FSMState, self.mode)
+        rospy.Subscriber("lane_filter_node/lane_pose", LanePose, self.control)
         self.pub = rospy.Publisher("lane_controller_node/car_cmd", Twist2DStamped, queue_size=10)
         
         
     def control(self, msg):
         Vel = Twist2DStamped()
-        rospy.logwarn("test control msg")
+        #rospy.logwarn("test control msg")
         if self.state == "LANE_FOLLOWING":
             dErr = 0 - msg.d
             phiErr = 0 - msg.phi
@@ -53,7 +53,7 @@ class Follow:
         
     def mode(self, mode):
         self.state = mode.state
-        rospy.logwarn("test mode msg")
+        #rospy.logwarn("test mode msg")
         
 if __name__ == "__main__":
     rospy.init_node("lab_4", anonymous=True)

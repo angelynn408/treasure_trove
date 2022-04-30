@@ -15,8 +15,8 @@ class Follow:
         self.dt = 0.01
         self.tagPID = PID.PID(self.K, self.dt)
         
-        self.tag = rospy.Subscriber("apriltag_detector_node/detections", AprilTagDetectionArray, self.control)
-        self.mode = rospy.Subscriber("fsm_node/mode", FSMState, self.mode)
+        rospy.Subscriber("apriltag_detector_node/detections", AprilTagDetectionArray, self.control)
+        rospy.Subscriber("fsm_node/mode", FSMState, self.mode)
         self.pub = rospy.Publisher("lane_controller_node/car_cmd", Twist2DStamped, queue_size=10)
         
         
@@ -45,7 +45,8 @@ class Follow:
                     Vel.v = vSum
                 else:
                     Vel.v = 0
-        	    
+            rospy.logwarn("v = " + str(Vel.v))
+            rospy.logwarn("omega = " + str(Vel.omega))    
             self.pub.publish(Vel)
         	
         elif self.state == "NORMAL_JOYSTICK_CONTROL":
