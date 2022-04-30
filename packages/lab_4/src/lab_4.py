@@ -4,7 +4,7 @@ import rospy
 import numpy as np
 from std_msgs.msg import Float32
 from duckietown_msgs.msg import AprilTagDetectionArray, Twist2DStamped, FSMState
-import hw9_2.py as PID
+import hw9_2 as PID
 
 class Follow:
     def __init__(self):
@@ -16,7 +16,7 @@ class Follow:
         self.tagPID = PID.PID(self.K, self.dt)
         
         self.tag = rospy.Subscriber("apriltag_detector_node/detections", AprilTagDetectionArray, self.control)
-        self.mode = rospy.Subscriber("fsm_node/mode", FsmState, self.mode)
+        self.mode = rospy.Subscriber("fsm_node/mode", FSMState, self.mode)
         self.pub = rospy.Publisher("lane_controller_node/car_cmd", Twist2DStamped, queue_size=10)
         
         
@@ -24,8 +24,8 @@ class Follow:
         Vel = Twist2DStamped()
         self.tag = msg
         
-        if self.mode == "LANE_FOLLOWING":
-            if len(msg.detections) = 0:
+        if self.state == "LANE_FOLLOWING":
+            if len(msg.detections) == 0:
                 Vel.v = 0
                 Vel.omega = 0
             else: 
@@ -48,7 +48,7 @@ class Follow:
         	    
             self.pub.publish(Vel)
         	
-        elif self.mode == "NORMAL_JOYSTICK_CONTROL":
+        elif self.state == "NORMAL_JOYSTICK_CONTROL":
             Vel.v = 0
             Vel.omega = 0
             self.pub.publish(Vel)
@@ -59,7 +59,7 @@ class Follow:
         self.state = mode.state
         
 if __name__ == "__main__":
-    rospy.init_node("lab4", anonymous=True)
+    rospy.init_node("lab_4", anonymous=True)
     Follow()
     rospy.spin()
         

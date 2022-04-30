@@ -4,7 +4,7 @@ import rospy
 import numpy as np
 from std_msgs.msg import Float32
 from duckietown_msgs.msg import LanePose, Twist2DStamped, FSMState
-import hw9_2.py as PID
+import hw9_2 as PID
 
 class Follow:
     def __init__(self):
@@ -15,16 +15,16 @@ class Follow:
         self.dt = 0.01
         self.tagPID = PID.PID(self.K, self.dt)
         
+        
+        self.mode = rospy.Subscriber("fsm_node/mode", FSMState, self.mode)
         self.tag = rospy.Subscriber("lane_filter_node/lane_pose", LanePose, self.control)
-        self.mode = rospy.Subscriber("fsm_node/mode", FsmState, self.mode)
         self.pub = rospy.Publisher("lane_controller_node/car_cmd", Twist2DStamped, queue_size=10)
         
         
     def control(self, msg):
         Vel = Twist2DStamped()
-        
-        if self.mode == "LANE_FOLLOWING":
-            
+        rospy.logwarn("test control msg")
+        if self.state == "LANE_FOLLOWING":
             dErr = 0 - msg.d
             phiErr = 0 - msg.phi
         
@@ -39,10 +39,12 @@ class Follow:
             
             if Vel.v < 0:
                 Vel.v = 0
+            rospy.logwarn("v = " + str(Vel.v))
+            rospy.logwarn("omega = " + str(Vel.omega))
         	    
             self.pub.publish(Vel)
         	
-        elif self.mode == "NORMAL_JOYSTICK_CONTROL":
+        elif self.state == "NORMAL_JOYSTICK_CONTROL":
             Vel.v = 0
             Vel.omega = 0
             self.pub.publish(Vel)
@@ -51,9 +53,10 @@ class Follow:
         
     def mode(self, mode):
         self.state = mode.state
+        rospy.logwarn("test mode msg")
         
 if __name__ == "__main__":
-    rospy.init_node("lab4", anonymous=True)
+    rospy.init_node("lab_4", anonymous=True)
     Follow()
     rospy.spin()
         
